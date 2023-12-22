@@ -1,0 +1,76 @@
+using System;
+using System.Diagnostics;
+
+namespace Taschenrechner_02
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            bool isRunning = true;
+            while (isRunning)
+            {
+                Console.WriteLine("Geben Sie Ihre Rechnung ein oder 'exit' zum Beenden: ");
+                string eingabe = Console.ReadLine(); // Eingabe der Rechnung
+
+                if (eingabe.Equals("exit"))
+                {
+                    break;
+                }
+                
+                try
+                {
+                    char[] rechenarten = { '+', '-', '*', '/' };
+
+                    int indexRechenarten = eingabe.IndexOfAny(rechenarten);
+
+                    string[] numbers = eingabe.Split(rechenarten);
+                    double ergebnis = double.Parse(numbers[0]);
+                    int index = 1; 
+
+                    while (indexRechenarten != -1)
+                    {       
+
+                        if (indexRechenarten >= 0)
+                        {
+                            double zahl = double.Parse(numbers[index]); // ergebnis + zahl 3
+
+                            switch (eingabe[indexRechenarten])
+                            {
+                                case '+':
+                                    ergebnis = ergebnis + zahl;
+                                    break;
+                                case '-':
+                                    ergebnis = ergebnis - zahl;
+                                    break;
+                                case '*':
+                                    ergebnis = ergebnis * zahl;
+                                    break;
+                                case '/':
+                                    if (zahl != 0)
+                                    {
+                                        ergebnis = ergebnis / zahl;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Division durch Null ist nicht möglich!");
+                                        continue;
+                                    }
+                                    break;
+                            }
+                          
+                        }
+                        else
+                        {
+                            Console.WriteLine("Kein gültiger Operator gefunden.");
+                        }
+                        index++;
+                        indexRechenarten = eingabe.IndexOfAny(rechenarten, indexRechenarten+1);
+                    }
+                    Console.WriteLine($"Das Ergebnis ist {ergebnis}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Ungültige Eingabe: {ex.Message}");
+                }
+            
